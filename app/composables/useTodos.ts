@@ -20,6 +20,12 @@ export const useTodo = (id: number) => {
       return (todos as Todo[]).find((t: Todo) => t.id === id) ?? null;
     },
     enabled: computed(() => !isNaN(id)),
+    // Reason:
+    // If a user goes to a URL like /todos/abc, your id computed will result in NaN.
+    // Without enabled: Vue Query will trigger the 
+    // queryFn
+    // The code will make a network request to the server, fetch all todos, and then find nothing because id is NaN. This is a wasted network request.
+    // With enabled: Vue Query sees the ID is invalid and stays in an idle state. No network request is made.
   });
 }
 

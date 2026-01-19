@@ -13,6 +13,8 @@ const id = computed(() => {
 
 const { data: todo, isPending, isError } = useTodo(id.value);
 const { data: todoTitle } = useTodoTitleHead(id.value);
+// const { data: todo, isPending, isError } = useTodo(id);
+// const { data: todoTitle } = useTodoTitleHead(id);
 
 useHead(() => ({
   title: todoTitle.value
