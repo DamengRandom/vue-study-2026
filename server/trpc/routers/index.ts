@@ -31,14 +31,23 @@ export const appRouter = router({
       completed: z.boolean(),
     }))
     .mutation(async ({ input }) => {
+      console.log('--- tRPC Mutation Triggered ---');
+      console.log('Action: updateTodo');
+      console.log('Contract Method:', updateTodoContract.updateTodo.method);
+      console.log('Payload:', input);
+
       const client = initClient(updateTodoContract, {
         baseUrl: 'http://localhost:3004',
         baseHeaders: {},
       });
+
       const res = await client.updateTodo({
         params: { id: input.id },
         body: { title: input.title, completed: input.completed },
       });
+
+      console.log('ts-rest Response Status:', res.status);
+      console.log('-------------------------------');
 
       if (res.status !== 200) {
         throw new TRPCError({
