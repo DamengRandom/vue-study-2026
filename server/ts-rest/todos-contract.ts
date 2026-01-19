@@ -10,6 +10,8 @@ export const todoSchema = z.object({
   completed: z.boolean(),
 });
 
+export type Todo = z.infer<typeof todoSchema>;
+
 export const todosContract = c.router({
   getTodos: {
     method: 'GET',
@@ -20,3 +22,19 @@ export const todosContract = c.router({
   },
 });
 
+export const updateTodoContract = c.router({
+  updateTodo: {
+    method: 'PATCH',
+    path: '/todos/:id',
+    pathParams: z.object({
+      id: z.coerce.number(),
+    }),
+    body: z.object({
+      title: z.string(),
+      completed: z.boolean(),
+    }),
+    responses: {
+      200: todoSchema,
+    },
+  },
+});

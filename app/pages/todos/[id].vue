@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
+import { useTodo } from '~~/app/composables/useTodos';
 
-const { $trpcClient } = useNuxtApp() as any;
 const route = useRoute();
 
 const id = computed(() => {
@@ -10,14 +9,7 @@ const id = computed(() => {
   return Number(Array.isArray(param) ? param[0] : param);
 });
 
-const { data, isPending, isError } = useQuery({
-  queryKey: ['todo', id],
-  queryFn: async () => {
-    const todos = await $trpcClient.todos.query();
-    return (todos as any[]).find((t: any) => t.id === id.value) ?? null;
-  },
-  enabled: computed(() => !isNaN(id.value)),
-});
+const { data: todo, isPending, isError } = useTodo(id.value);
 </script>
 
 <template>
@@ -26,12 +18,12 @@ const { data, isPending, isError } = useQuery({
 
     <div v-if="isPending">Loading todo...</div>
     <div v-else-if="isError">Failed to load todo.</div>
-    <div v-else-if="!data">Todo not found.</div>
+    <div v-else-if="!todo">Todo not found.</div>
     <div v-else>
-      <h1>{{ data.title }}</h1>
-      <p>ID: {{ data.id }}</p>
-      <p>User ID: {{ data.userId }}</p>
-      <p>Completed: {{ data.completed ? 'Yes' : 'No' }}</p>
+      <h1>{{ todo.title }}</h1>
+      <p>ID: {{ todo.id }}</p>
+      <p>User ID: {{ todo.userId }}</p>
+      <p>Completed: {{ todo.completed ? 'Yes' : 'No' }}</p>
     </div>
   </main>
 </template>

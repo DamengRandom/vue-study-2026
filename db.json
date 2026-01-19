@@ -3,31 +3,31 @@
         {
             "id": 1,
             "userId": 1,
-            "title": "Local Todo 1: Buy Milk",
+            "title": "Buy Milk",
             "completed": false
         },
         {
             "id": 2,
             "userId": 1,
-            "title": "Local Todo 2: Walk the Dog",
+            "title": "Walk the Dog",
             "completed": true
         },
         {
             "id": 3,
             "userId": 1,
-            "title": "Local Todo 3: Learn Nuxt 4",
+            "title": "Learn Nuxt 4",
             "completed": false
         },
         {
             "id": 4,
             "userId": 2,
-            "title": "Local Todo 4: Fix Bugs",
+            "title": "Fix Bugs",
             "completed": true
         },
         {
             "id": 5,
             "userId": 2,
-            "title": "Local Todo 5: Create JSON Server",
+            "title": "Create JSON Server",
             "completed": false
         }
     ]
