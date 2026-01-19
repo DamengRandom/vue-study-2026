@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useTodo } from '~~/app/composables/useTodos';
+import { useTodo, useTodoTitleHead } from '~~/app/composables/useTodos';
 import TodoEditForm from '~~/app/components/TodoEditForm.vue';
 
 const route = useRoute();
@@ -12,6 +12,11 @@ const id = computed(() => {
 });
 
 const { data: todo, isPending, isError } = useTodo(id.value);
+const { data: todoTitle } = useTodoTitleHead(id.value);
+
+useHead(() => ({
+  title: todoTitle.value
+}));
 
 const toggleEdit = () => {
   showEdit.value = !showEdit.value;
