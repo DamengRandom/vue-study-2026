@@ -64,3 +64,9 @@ export const useUpdateTodo = () => {
 		},
 	});
 }
+
+// AI note:
+ 
+// Since you are using a Factory Pattern (todoQueries.detail), the values in the factory are "calculated" once per call. To make those calculations reactive, you must use a computed or a getter function.
+
+// Recommendation: Stick with computed. It is the clearest way to signal to other developers: "This whole configuration object is dynamic and will update when dependencies change."
