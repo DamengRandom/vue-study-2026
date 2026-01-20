@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useTodos } from '~~/app/composables/useTodos';
+import { todoApi } from '~~/app/composables/useTodos';
 
-const { data: todos, isPending, isError } = useTodos();
+const { data: todos, isPending, isError } = todoApi.useTodos();
 
 const goToTodo = (id: number) => {
   navigateTo(`/todos/${id}`);

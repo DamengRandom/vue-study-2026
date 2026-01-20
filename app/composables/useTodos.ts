@@ -8,58 +8,64 @@ const fetchTodoById = async (id: number) => {
   return (todos as Todo[]).find((t: Todo) => t.id === id) ?? null;
 };
 
-/**
- * Factory for Todo-related query options.
- * This centralizes query keys and fetch logic.
- */
-export const todoQueries = {
-  all: () => queryOptions({
-    queryKey: ['todos'] as const,
-    queryFn: () => useNuxtApp().$trpcClient.todos.query() as Promise<Todo[]>,
-  }),
-  detail: (id: number) => queryOptions({
-    queryKey: ['todo', id] as const,
-    queryFn: () => fetchTodoById(id),
-  })
-}
-
-export const useTodos = () => {
-  return useQuery(todoQueries.all());
-}
-
-export const useTodo = (id: MaybeRefOrGetter<number>) => {
-  return useQuery(computed(() => {
-    const todoId = toValue(id);
-    return {
-      ...todoQueries.detail(todoId),
-      enabled: !isNaN(todoId),
-    };
-  }));
-}
-
-export const useTodoTitleHead = (id: MaybeRefOrGetter<number>) => {
-  return useQuery(computed(() => {
-    const todoId = toValue(id);
-    return {
-      queryKey: ['todo-title-head', todoId] as const,
-      queryFn: () => fetchTodoById(todoId),
+export const todoApi = {
+  /**
+   * Factory for Todo-related query options.
+   * Centralizes query keys and fetch logic.
+   */
+  queries: {
+    all: () => queryOptions({
+      queryKey: ['todos'] as const,
+      queryFn: () => useNuxtApp().$trpcClient.todos.query() as Promise<Todo[]>,
+    }),
+    detail: (id: number) => queryOptions({
+      queryKey: ['todo', id] as const,
+      queryFn: () => fetchTodoById(id),
+    }),
+    titleHead: (id: number) => queryOptions({
+      queryKey: ['todo-title-head', id] as const,
+      queryFn: () => fetchTodoById(id),
       select: (todo: Todo | null) => todo?.title ?? '-',
-      enabled: !isNaN(todoId),
-    };
-  }));
-}
+    })
+  },
 
-export const useUpdateTodo = () => {
-  const { $trpcClient } = useNuxtApp();
-  const queryClient = useQueryClient();
+  // Composition API Hooks
+  useTodos: () => {
+    return useQuery(todoApi.queries.all());
+  },
 
-  return useMutation({
-    mutationFn: (variables: { id: number; title: string; completed: boolean }) =>
-      $trpcClient.updateTodo.mutate(variables),
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: todoQueries.all().queryKey });
-      queryClient.invalidateQueries({ queryKey: todoQueries.detail(variables.id).queryKey });
-      queryClient.invalidateQueries({ queryKey: ['todo-title-head', variables.id] });
-    },
-  });
-}
+  useTodo: (id: MaybeRefOrGetter<number>) => {
+    return useQuery(computed(() => {
+      const todoId = toValue(id);
+      return {
+        ...todoApi.queries.detail(todoId),
+        enabled: !isNaN(todoId),
+      };
+    }));
+  },
+
+  useTodoTitleHead: (id: MaybeRefOrGetter<number>) => {
+    return useQuery(computed(() => {
+      const todoId = toValue(id);
+      return {
+        ...todoApi.queries.titleHead(todoId),
+        enabled: !isNaN(todoId),
+      };
+    }));
+  },
+
+  useUpdateTodo: () => {
+    const { $trpcClient } = useNuxtApp();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: (variables: { id: number; title: string; completed: boolean }) =>
+        $trpcClient.updateTodo.mutate(variables),
+      onSuccess: (data, variables) => {
+        queryClient.invalidateQueries({ queryKey: todoApi.queries.all().queryKey });
+        queryClient.invalidateQueries({ queryKey: todoApi.queries.detail(variables.id).queryKey });
+        queryClient.invalidateQueries({ queryKey: todoApi.queries.titleHead(variables.id).queryKey });
+      },
+    });
+  }
+};

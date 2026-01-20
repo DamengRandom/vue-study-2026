@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import type { Todo } from '~~/server/ts-rest/todos-contract';
-import { useUpdateTodo } from '~~/app/composables/useTodos';
+import { todoApi } from '~~/app/composables/useTodos';
 
 const props = defineProps<{
   todo: Todo;
@@ -15,7 +15,7 @@ const emit = defineEmits<{
 const title = ref(props.todo.title);
 const completed = ref(props.todo.completed);
 
-const { mutate, isPending, isError, error } = useUpdateTodo();
+const { mutate, isPending, isError, error } = todoApi.useUpdateTodo();
 
 const handleSubmit = () => {
   mutate({

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useTodo, useTodoTitleHead } from '~~/app/composables/useTodos';
+import { todoApi } from '~~/app/composables/useTodos';
 import TodoEditForm from '~~/app/components/TodoEditForm.vue';
 
 const route = useRoute();
@@ -11,8 +11,8 @@ const id = computed(() => {
   return Number(Array.isArray(param) ? param[0] : param);
 });
 
-const { data: todo, isPending, isError } = useTodo(id.value);
-const { data: todoTitle } = useTodoTitleHead(id.value);
+const { data: todo, isPending, isError } = todoApi.useTodo(id.value);
+const { data: todoTitle } = todoApi.useTodoTitleHead(id.value);
 // const { data: todo, isPending, isError } = useTodo(id);
 // const { data: todoTitle } = useTodoTitleHead(id);
 
