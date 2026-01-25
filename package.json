@@ -11,17 +11,24 @@
     "db": "json-server --watch db.json --port 3004"
   },
   "dependencies": {
+    "@tanstack/form-core": "^1.27.7",
+    "@tanstack/vue-form": "^1.27.7",
     "@tanstack/vue-query": "^5.92.8",
     "@trpc/client": "^11.8.1",
     "@trpc/server": "^11.8.1",
     "@ts-rest/core": "^3.52.1",
     "nuxt": "^4.2.2",
+    "reka-ui": "^2.7.0",
     "trpc-nuxt": "^2.0.1",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "json-server": "^1.0.0-beta.3"
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.23",
+    "json-server": "^1.0.0-beta.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18"
   }
 }
