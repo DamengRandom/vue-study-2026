@@ -74,6 +74,19 @@ yarn preview
 
 # bun
 bun run preview
-```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+
+# <!-- AI Prompts (for author only) -->
+
+# <!-- Fix current error for PetDetailsOrchestrator (orechestration pattern exmaple) please -->
+# <!-- 
+
+# And also install @tanstack query packages, eg: @tanstack/form-core, @tanstack/vue-form?
+
+# And also replace useToast to reka toast or nuxt native toast, I don't mind, as long as it works.
+
+# Thanks for help to fix on it.
+# ```
+#  -->
