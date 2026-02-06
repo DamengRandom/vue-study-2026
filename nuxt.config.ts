@@ -5,4 +5,11 @@ export default defineNuxtConfig({
   build: {
     transpile: ['trpc-nuxt'],
   },
+  css: ['~/assets/css/tailwind.css'],
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
+      autoprefixer: {},
+    },
+  },
 })
